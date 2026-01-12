@@ -1,0 +1,799 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>股票二级市场行业研究框架提示词</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <style>
+        :root {
+            --primary: #0f172a;
+            --secondary: #64748b;
+            --accent: #3b82f6;
+            --muted: #f8fafc;
+            --border: #e2e8f0;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.7;
+            color: var(--primary);
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+        
+        .serif {
+            font-family: 'Noto Serif SC', serif;
+        }
+        
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 2rem;
+            height: 60vh;
+            margin-bottom: 3rem;
+        }
+        
+        .hero-title {
+            grid-column: 1 / -1;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .hero-visual {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+            background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+        }
+        
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2rem;
+            background: rgba(248, 250, 252, 0.9);
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+        }
+        
+        .toc {
+            position: fixed;
+            left: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 280px;
+            max-height: 80vh;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            z-index: 50;
+            border: 1px solid var(--border);
+        }
+        
+        .toc a {
+            display: block;
+            padding: 0.5rem 0;
+            color: var(--secondary);
+            text-decoration: none;
+            border-left: 2px solid transparent;
+            padding-left: 1rem;
+            margin-left: -1rem;
+            transition: all 0.2s ease;
+        }
+        
+        .toc a:hover,
+        .toc a.active {
+            color: var(--accent);
+            border-left-color: var(--accent);
+        }
+        
+        .main-content {
+            margin-left: 320px;
+            max-width: 900px;
+            padding: 2rem;
+        }
+        
+        .section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 2rem;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            position: relative;
+        }
+        
+        .subsection-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            color: var(--primary);
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0.5rem;
+        }
+        
+        .data-point {
+            display: inline-flex;
+            align-items: center;
+            background: var(--accent);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin: 0 0.25rem;
+        }
+        
+        .citation {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            margin: 0 0.25rem;
+            text-decoration: none;
+        }
+        
+        .citation:hover {
+            background: var(--accent);
+        }
+        
+        @media (max-width: 1280px) {
+            .toc {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+                max-width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                height: auto;
+                gap: 1rem;
+            }
+            
+            .hero-content {
+                padding: 1rem;
+            }
+            
+            .hero-title h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-title p {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .subsection-title {
+                font-size: 1.4rem;
+            }
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0.5rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--accent);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-bottom: 2rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.75rem;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+        
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .matrix-cell {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        
+        .matrix-cell:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+  <base target="_blank">
+</head>
+
+  <body>
+    <!-- Table of Contents -->
+    <nav class="toc">
+      <h3 class="text-lg font-semibold mb-4 text-slate-800">目录导航</h3>
+      <a href="#overview">研究框架总览</a>
+      <a href="#business-model">商业模式与盈利能力</a>
+      <a href="#lifecycle">行业生命周期分析</a>
+      <a href="#value-chain">产业链与价值链</a>
+      <a href="#macro-policy">宏观经济与政策影响</a>
+      <a href="#conclusion">总结与投资决策</a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Hero Section -->
+      <div class="hero-grid">
+        <div class="hero-title">
+          <h1 class="text-5xl font-black serif text-slate-900 mb-4 leading-tight">
+            <em>股票二级市场行业研究框架</em>
+          </h1>
+          <p class="text-xl text-slate-600 mb-6">
+            识别&#34;好赛道&#34;与&#34;好公司&#34;的系统化方法论
+          </p>
+        </div>
+
+        <div class="hero-visual">
+          <img src="https://kimi-web-img.moonshot.cn/img/png.pngtree.com/c32eb3187c1b7ddbdeae3071efe6a17c98140381.jpg" alt="抽象投资分析概念背景图" class="w-full h-full object-cover opacity-30" size="large" aspect="wide" style="photo" query="抽象投资分析背景" referrerpolicy="no-referrer" data-modified="1" data-score="0.00"/>
+          <div class="absolute inset-0 bg-gradient-to-br from-slate-900/80 to-blue-900/60"></div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="text-center text-white">
+              <i class="fas fa-chart-line text-6xl mb-4"></i>
+              <p class="text-lg font-medium">投资决策支持框架</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-content">
+          <h3 class="text-lg font-semibold mb-3">核心目标</h3>
+          <p class="text-slate-700">
+            为股票二级市场投资者提供系统、全面的行业研究框架，通过深度分析精准识别具备长期增长潜力的&#34;好赛道&#34;和拥有可持续竞争优势的&#34;好公司&#34;。
+          </p>
+        </div>
+      </div>
+
+      <!-- Framework Overview -->
+      <section id="overview" class="section">
+        <h2 class="section-title serif">1. 研究框架总览</h2>
+
+        <div class="highlight-box">
+          <h3 class="text-lg font-semibold mb-2">框架核心</h3>
+          <p>精准识别并评估两个关键要素：&#34;好赛道&#34;与&#34;好公司&#34;。</p>
+          <ul class="list-disc list-inside mt-2 space-y-1">
+            <li><strong>好赛道：</strong>具备长期增长潜力、市场空间广阔、竞争格局相对有利的行业</li>
+            <li><strong>好公司：</strong>在行业内拥有可持续竞争优势（护城河）的龙头企业</li>
+          </ul>
+        </div>
+
+        <h3 class="subsection-title">1.1 框架结构：五大维度综合分析</h3>
+
+        <div class="matrix-grid">
+          <div class="matrix-cell">
+            <i class="fas fa-chart-pie text-2xl text-blue-600 mb-2"></i>
+            <h4 class="font-semibold">商业模式</h4>
+            <p class="text-sm text-gray-600">盈利模式与成本结构</p>
+          </div>
+          <div class="matrix-cell">
+            <i class="fas fa-chart-line text-2xl text-green-600 mb-2"></i>
+            <h4 class="font-semibold">生命周期</h4>
+            <p class="text-sm text-gray-600">行业阶段与竞争格局</p>
+          </div>
+          <div class="matrix-cell">
+            <i class="fas fa-link text-2xl text-purple-600 mb-2"></i>
+            <h4 class="font-semibold">价值链</h4>
+            <p class="text-sm text-gray-600">产业链结构分析</p>
+          </div>
+          <div class="matrix-cell">
+            <i class="fas fa-globe text-2xl text-red-600 mb-2"></i>
+            <h4 class="font-semibold">宏观政策</h4>
+            <p class="text-sm text-gray-600">经济环境与政策影响</p>
+          </div>
+          <div class="matrix-cell">
+            <i class="fas fa-target text-2xl text-orange-600 mb-2"></i>
+            <h4 class="font-semibold">投资决策</h4>
+            <p class="text-sm text-gray-600">综合评估与策略匹配</p>
+          </div>
+        </div>
+
+        <div class="timeline mt-8">
+          <div class="timeline-item">
+            <h4 class="font-semibold">商业模式与盈利能力分析</h4>
+            <p class="text-gray-600">理解企业如何创造、传递和获取价值</p>
+          </div>
+          <div class="timeline-item">
+            <h4 class="font-semibold">行业生命周期与竞争格局</h4>
+            <p class="text-gray-600">评估行业的整体吸引力和盈利潜力</p>
+          </div>
+          <div class="timeline-item">
+            <h4 class="font-semibold">产业链与价值链分析</h4>
+            <p class="text-gray-600">识别战略控制点和高附加值环节</p>
+          </div>
+          <div class="timeline-item">
+            <h4 class="font-semibold">宏观经济与政策影响</h4>
+            <p class="text-gray-600">预判长期发展趋势和政策风险</p>
+          </div>
+          <div class="timeline-item">
+            <h4 class="font-semibold">总结与投资决策</h4>
+            <p class="text-gray-600">形成最终判断并匹配投资策略</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Business Model Analysis -->
+      <section id="business-model" class="section">
+        <h2 class="section-title serif">2. 商业模式与盈利能力分析</h2>
+
+        <h3 class="subsection-title">2.1 盈利模式识别与评估</h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div class="bg-white p-6 rounded-lg border border-gray-200">
+            <h4 class="font-semibold text-lg mb-3 text-red-600">传统盈利模式</h4>
+            <ul class="space-y-2">
+              <li><strong>硬件销售：</strong>通过生产销售实体产品获取利润</li>
+              <li><strong>渠道差价：</strong>批发价与零售价之间的差额</li>
+            </ul>
+            <p class="text-sm text-gray-600 mt-3">面临产品同质化和价格战挑战</p>
+          </div>
+          <div class="bg-white p-6 rounded-lg border border-gray-200">
+            <h4 class="font-semibold text-lg mb-3 text-green-600">新兴盈利模式</h4>
+            <ul class="space-y-2">
+              <li><strong>订阅服务：</strong>持续性服务获取经常性收入</li>
+              <li><strong>软件定义：</strong>软件作为产品核心和价值来源</li>
+              <li><strong>生态平台：</strong>连接多方参与者实现盈利</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="subsection-title">2.2 案例：新能源汽车行业盈利转型</h3>
+
+        <div class="highlight-box">
+          <h4 class="font-semibold">从&#34;硬件盈利&#34;到&#34;软件及服务盈利&#34;的转变</h4>
+          <p class="mt-2">新能源汽车行业正在经历深刻转型，车辆从交通工具转变为可持续提供服务的智能终端。</p>
+        </div>
+
+        <div class="bg-blue-50 p-6 rounded-lg mt-4">
+          <h4 class="font-semibold mb-3">核心盈利点</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="text-center">
+              <i class="fas fa-robot text-2xl text-blue-600 mb-2"></i>
+              <h5 class="font-medium">自动驾驶软件</h5>
+              <p class="text-sm text-gray-600">FSD订阅服务带来高利润率收入</p>
+            </div>
+            <div class="text-center">
+              <i class="fas fa-car text-2xl text-green-600 mb-2"></i>
+              <h5 class="font-medium">智能座舱服务</h5>
+              <p class="text-sm text-gray-600">应用生态和个性化服务</p>
+            </div>
+            <div class="text-center">
+              <i class="fas fa-charging-station text-2xl text-purple-600 mb-2"></i>
+              <h5 class="font-medium">能源服务</h5>
+              <p class="text-sm text-gray-600">充电、换电、V2G等新业务</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Industry Lifecycle -->
+      <section id="lifecycle" class="section">
+        <h2 class="section-title serif">3. 行业生命周期与竞争格局分析</h2>
+
+        <h3 class="subsection-title">3.1 行业生命周期阶段判断</h3>
+
+        <div class="overflow-x-auto mb-8">
+          <table class="w-full bg-white rounded-lg border border-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-4 py-3 text-left font-semibold">评估维度</th>
+                <th class="px-4 py-3 text-left font-semibold">导入期</th>
+                <th class="px-4 py-3 text-left font-semibold">成长期</th>
+                <th class="px-4 py-3 text-left font-semibold">成熟期</th>
+                <th class="px-4 py-3 text-left font-semibold">衰退期</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <tr>
+                <td class="px-4 py-3 font-medium">市场规模</td>
+                <td class="px-4 py-3 text-sm">规模小，增长快</td>
+                <td class="px-4 py-3 text-sm bg-green-50">快速扩大</td>
+                <td class="px-4 py-3 text-sm">趋于饱和</td>
+                <td class="px-4 py-3 text-sm">萎缩下降</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 font-medium">技术与产品</td>
+                <td class="px-4 py-3 text-sm">不成熟，迭代快</td>
+                <td class="px-4 py-3 text-sm bg-green-50">渐趋定型</td>
+                <td class="px-4 py-3 text-sm">技术成熟</td>
+                <td class="px-4 py-3 text-sm">技术落后</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 font-medium">竞争格局</td>
+                <td class="px-4 py-3 text-sm">竞争者少</td>
+                <td class="px-4 py-3 text-sm bg-green-50">竞争加剧</td>
+                <td class="px-4 py-3 text-sm">集中度高</td>
+                <td class="px-4 py-3 text-sm">企业退出</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 font-medium">盈利能力</td>
+                <td class="px-4 py-3 text-sm">普遍亏损</td>
+                <td class="px-4 py-3 text-sm bg-green-50">利润快速增长</td>
+                <td class="px-4 py-3 text-sm">增长停滞</td>
+                <td class="px-4 py-3 text-sm">持续下滑</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="subsection-title">3.2 案例：新能源汽车行业生命周期判断</h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-lg">
+            <h4 class="font-semibold text-green-800 mb-3">
+              <i class="fas fa-chart-line mr-2"></i>处于高速成长期
+            </h4>
+            <ul class="space-y-2 text-sm">
+              <li>• 2025年渗透率突破 <span class="data-point">50%</span>
+              </li>
+              <li>• 预计2026年销量达 <span class="data-point">2000万辆</span></li>
+              <li>• L2+级功能普及率将达 <span class="data-point">32%</span></li>
+              <li>• 固态电池即将量产应用</li>
+            </ul>
+          </div>
+          <div class="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-lg">
+            <h4 class="font-semibold text-orange-800 mb-3">
+              <i class="fas fa-exclamation-triangle mr-2"></i>成熟期特征显现
+            </h4>
+            <ul class="space-y-2 text-sm">
+              <li>• 价格战常态化</li>
+              <li>• 市场集中度提升</li>
+              <li>• 增长速度逐步放缓</li>
+              <li>• 行业洗牌加剧</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Value Chain Analysis -->
+      <section id="value-chain" class="section">
+        <h2 class="section-title serif">4. 产业链与价值链分析</h2>
+
+        <h3 class="subsection-title">4.1 产业链结构梳理</h3>
+
+        <div class="bg-white p-6 rounded-lg border border-gray-200 mb-8">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="text-center">
+              <i class="fas fa-arrow-up text-3xl text-blue-600 mb-3"></i>
+              <h4 class="font-semibold mb-2">上游</h4>
+              <p class="text-sm text-gray-600">原材料、核心零部件</p>
+              <div class="mt-3 space-y-1 text-xs">
+                <span class="inline-block bg-blue-100 text-blue-800 px-2 py-1 rounded">动力电池</span>
+                <span class="inline-block bg-blue-100 text-blue-800 px-2 py-1 rounded">智能驾驶芯片</span>
+                <span class="inline-block bg-blue-100 text-blue-800 px-2 py-1 rounded">电机电控</span>
+              </div>
+            </div>
+            <div class="text-center">
+              <i class="fas fa-cogs text-3xl text-green-600 mb-3"></i>
+              <h4 class="font-semibold mb-2">中游</h4>
+              <p class="text-sm text-gray-600">整车制造、系统集成</p>
+              <div class="mt-3 space-y-1 text-xs">
+                <span class="inline-block bg-green-100 text-green-800 px-2 py-1 rounded">车身制造</span>
+                <span class="inline-block bg-green-100 text-green-800 px-2 py-1 rounded">三电集成</span>
+                <span class="inline-block bg-green-100 text-green-800 px-2 py-1 rounded">智能化集成</span>
+              </div>
+            </div>
+            <div class="text-center">
+              <i class="fas fa-arrow-down text-3xl text-purple-600 mb-3"></i>
+              <h4 class="font-semibold mb-2">下游</h4>
+              <p class="text-sm text-gray-600">销售服务、后市场</p>
+              <div class="mt-3 space-y-1 text-xs">
+                <span class="inline-block bg-purple-100 text-purple-800 px-2 py-1 rounded">充电服务</span>
+                <span class="inline-block bg-purple-100 text-purple-800 px-2 py-1 rounded">软件服务</span>
+                <span class="inline-block bg-purple-100 text-purple-800 px-2 py-1 rounded">二手车</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="subsection-title">4.2 价值链利润分配分析</h3>
+
+        <div class="highlight-box">
+          <h4 class="font-semibold">价值链利润转移趋势</h4>
+          <p class="mt-2">利润从整车制造向上游核心零部件和下游软件服务转移，从硬件向软件转移。</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          <div class="bg-gradient-to-br from-red-50 to-red-100 p-6 rounded-lg">
+            <h4 class="font-semibold text-red-800 mb-3">高附加值环节</h4>
+            <ul class="space-y-2 text-sm">
+              <li>• <strong>上游：</strong>动力电池、智能驾驶芯片</li>
+              <li>• <strong>下游：</strong>自动驾驶软件、智能座舱服务</li>
+              <li>• <strong>特点：</strong>技术壁垒高、议价能力强</li>
+            </ul>
+          </div>
+          <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 p-6 rounded-lg">
+            <h4 class="font-semibold text-yellow-800 mb-3">利润承压环节</h4>
+            <ul class="space-y-2 text-sm">
+              <li>• <strong>中游：</strong>整车制造</li>
+              <li>• <strong>原因：</strong>竞争激烈、成本压力</li>
+              <li>• <strong>趋势：</strong>利润空间被挤压</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Macro and Policy Analysis -->
+      <section id="macro-policy" class="section">
+        <h2 class="section-title serif">5. 宏观经济与政策影响分析</h2>
+
+        <h3 class="subsection-title">5.1 宏观经济因素分析</h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div class="bg-white p-6 rounded-lg border border-gray-200">
+            <i class="fas fa-chart-area text-2xl text-blue-600 mb-3"></i>
+            <h4 class="font-semibold mb-2">经济增长</h4>
+            <p class="text-sm text-gray-600">影响消费能力和投资意愿，决定行业需求基础</p>
+          </div>
+          <div class="bg-white p-6 rounded-lg border border-gray-200">
+            <i class="fas fa-percentage text-2xl text-green-600 mb-3"></i>
+            <h4 class="font-semibold mb-2">利率水平</h4>
+            <p class="text-sm text-gray-600">影响融资成本和资产估值，决定投资吸引力</p>
+          </div>
+          <div class="bg-white p-6 rounded-lg border border-gray-200">
+            <i class="fas fa-fire text-2xl text-red-600 mb-3"></i>
+            <h4 class="font-semibold mb-2">通胀水平</h4>
+            <p class="text-sm text-gray-600">影响成本结构和定价能力，决定盈利质量</p>
+          </div>
+        </div>
+
+        <h3 class="subsection-title">5.2 政策环境分析</h3>
+
+        <div class="bg-white p-6 rounded-lg border border-gray-200 mb-8">
+          <h4 class="font-semibold mb-4">政策工具分类</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <h5 class="font-medium text-blue-600 mb-2">产业政策</h5>
+              <ul class="text-sm space-y-1">
+                <li>• 财政补贴</li>
+                <li>• 税收优惠</li>
+                <li>• 准入门槛</li>
+              </ul>
+            </div>
+            <div>
+              <h5 class="font-medium text-green-600 mb-2">监管政策</h5>
+              <ul class="text-sm space-y-1">
+                <li>• 环保标准</li>
+                <li>• 数据安全</li>
+                <li>• 反垄断</li>
+              </ul>
+            </div>
+            <div>
+              <h5 class="font-medium text-purple-600 mb-2">宏观政策</h5>
+              <ul class="text-sm space-y-1">
+                <li>• 财政政策</li>
+                <li>• 货币政策</li>
+                <li>• 结构性政策</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="subsection-title">5.3 案例：政策对新能源汽车行业的影响</h3>
+
+        <div class="space-y-6">
+          <div class="bg-orange-50 p-6 rounded-lg border-l-4 border-orange-400">
+            <h4 class="font-semibold text-orange-800 mb-3">补贴退坡影响</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div>
+                <strong>短期影响：</strong>
+                <ul class="list-disc list-inside mt-1 space-y-1">
+                  <li>增加购车成本</li>
+                  <li>抑制部分需求</li>
+                  <li>加剧价格竞争</li>
+                </ul>
+              </div>
+              <div>
+                <strong>长期影响：</strong>
+                <ul class="list-disc list-inside mt-1 space-y-1">
+                  <li>加速优胜劣汰</li>
+                  <li>促进行业转型</li>
+                  <li>强化龙头企业</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-green-50 p-6 rounded-lg border-l-4 border-green-400">
+            <h4 class="font-semibold text-green-800 mb-3">&#34;双碳&#34;目标驱动</h4>
+            <p class="text-sm">为新能源汽车发展提供长期政策指引，推动能源结构转型和交通绿色化。</p>
+            <div class="mt-3 grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+              <span class="bg-green-100 text-green-800 px-2 py-1 rounded">充电基础设施</span>
+              <span class="bg-green-100 text-green-800 px-2 py-1 rounded">换电模式</span>
+              <span class="bg-green-100 text-green-800 px-2 py-1 rounded">绿色电力</span>
+              <span class="bg-green-100 text-green-800 px-2 py-1 rounded">路权优惠</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Conclusion -->
+      <section id="conclusion" class="section">
+        <h2 class="section-title serif">6. 总结：整合分析，指导投资决策</h2>
+
+        <h3 class="subsection-title">6.1 综合评估行业吸引力</h3>
+
+        <div class="highlight-box">
+          <h4 class="font-semibold">高吸引力行业特征</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+            <ul class="space-y-2">
+              <li>• 处于成长期或成熟期初期</li>
+              <li>• 市场空间广阔，增长动力持续</li>
+              <li>• 竞争格局清晰，龙头企业护城河稳固</li>
+            </ul>
+            <ul class="space-y-2">
+              <li>• 产业链存在高附加值战略控制点</li>
+              <li>• 受益于宏观经济趋势</li>
+              <li>• 政策环境友好，发展路径确定性强</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="subsection-title">6.2 不同生命周期下的投资机会与风险</h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div class="bg-purple-50 p-4 rounded-lg text-center">
+            <i class="fas fa-seedling text-2xl text-purple-600 mb-2"></i>
+            <h4 class="font-semibold text-purple-800">导入期</h4>
+            <p class="text-sm text-gray-600 mt-2">高风险高回报，适合专业投资者</p>
+          </div>
+          <div class="bg-green-50 p-4 rounded-lg text-center">
+            <i class="fas fa-chart-line text-2xl text-green-600 mb-2"></i>
+            <h4 class="font-semibold text-green-800">成长期</h4>
+            <p class="text-sm text-gray-600 mt-2">获取超额收益的黄金时期</p>
+          </div>
+          <div class="bg-blue-50 p-4 rounded-lg text-center">
+            <i class="fas fa-balance-scale text-2xl text-blue-600 mb-2"></i>
+            <h4 class="font-semibold text-blue-800">成熟期</h4>
+            <p class="text-sm text-gray-600 mt-2">稳定股息回报，价值投资为主</p>
+          </div>
+          <div class="bg-red-50 p-4 rounded-lg text-center">
+            <i class="fas fa-arrow-down text-2xl text-red-600 mb-2"></i>
+            <h4 class="font-semibold text-red-800">衰退期</h4>
+            <p class="text-sm text-gray-600 mt-2">以规避为主，关注转型机会</p>
+          </div>
+        </div>
+
+        <h3 class="subsection-title">6.3 匹配投资策略</h3>
+
+        <div class="bg-white p-6 rounded-lg border border-gray-200">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="text-center">
+              <i class="fas fa-rocket text-3xl text-green-600 mb-3"></i>
+              <h4 class="font-semibold text-green-800 mb-2">成长型投资</h4>
+              <p class="text-sm text-gray-600">寻找营收利润增速远超行业平均的成长股，关注市场空间和技术壁垒</p>
+            </div>
+            <div class="text-center">
+              <i class="fas fa-gem text-3xl text-blue-600 mb-3"></i>
+              <h4 class="font-semibold text-blue-800 mb-2">价值型投资</h4>
+              <p class="text-sm text-gray-600">寻找市场价格低于内在价值的标的，关注估值水平和股息率</p>
+            </div>
+            <div class="text-center">
+              <i class="fas fa-sync-alt text-3xl text-purple-600 mb-3"></i>
+              <h4 class="font-semibold text-purple-800 mb-2">周期型投资</h4>
+              <p class="text-sm text-gray-600">把握宏观经济周期，顺周期配置周期性行业</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 p-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg">
+          <h4 class="text-xl font-semibold mb-3">投资决策核心原则</h4>
+          <p class="mb-4">通过系统化的五维度分析框架，投资者可以穿透市场噪音，形成基于严谨逻辑和数据驱动的投资判断，最终提升投资组合的长期回报。</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div>
+              <strong>关键成功因素：</strong>
+              <ul class="list-disc list-inside mt-1 space-y-1">
+                <li>避免&#34;只见树木，不见森林&#34;的片面性</li>
+                <li>动态评估各环节价值变化</li>
+                <li>在不同投资策略间灵活切换</li>
+              </ul>
+            </div>
+            <div>
+              <strong>风险控制要点：</strong>
+              <ul class="list-disc list-inside mt-1 space-y-1">
+                <li>识别&#34;好赛道&#34;但避开&#34;红海竞争&#34;</li>
+                <li>寻找&#34;好公司&#34;关注可持续竞争优势</li>
+                <li>综合考虑宏观环境和政策影响</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Highlight active section in TOC
+        const sections = document.querySelectorAll('.section');
+        const tocLinks = document.querySelectorAll('.toc a');
+
+        function highlightActiveSection() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', highlightActiveSection);
+        highlightActiveSection(); // Initial call
+    </script>
+  
+
+</body></html>
