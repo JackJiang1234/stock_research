@@ -8,3 +8,6 @@ obj/
 # User-specific files
 **/bin/
 **/obj/
+
+# Configuration files with sensitive data
+**/appsettings.secret.json
